@@ -13,27 +13,37 @@ public class RoomNumber {
 
     private Integer number;
 
-    @ManyToMany(mappedBy = "roomNumbers")
-    private Set<TaskList> taskLists;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tasklist_id")
+    private TaskList taskList;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "camera_type_id", referencedColumnName = "id")
     private CameraType cameraType;
 
-    public RoomNumber(Long id, Integer number, Set<TaskList> taskLists) {
+
+    public RoomNumber(Long id, Integer number, TaskList taskLists) {
         this.id = id;
         this.number = number;
-        this.taskLists = taskLists;
+        this.taskList = taskLists;
     }
 
     public CameraType getCameraType() {
         return cameraType;
     }
 
-    public RoomNumber(Long id, Integer number, Set<TaskList> taskLists, CameraType cameraType) {
+    public RoomNumber(Long id, Integer number, TaskList taskList, CameraType cameraType) {
         this.id = id;
         this.number = number;
-        this.taskLists = taskLists;
+        this.taskList = taskList;
         this.cameraType = cameraType;
+    }
+
+    public TaskList getTaskList() {
+        return taskList;
+    }
+
+    public void setTaskList(TaskList taskList) {
+        this.taskList = taskList;
     }
 
     public void setCameraType(CameraType cameraType) {
@@ -59,13 +69,6 @@ public class RoomNumber {
         this.number = number;
     }
 
-    public Set<TaskList> getTaskLists() {
-        return taskLists;
-    }
-
-    public void setTaskLists(Set<TaskList> taskLists) {
-        this.taskLists = taskLists;
-    }
 
     // constructor, getters, and setters
 }
