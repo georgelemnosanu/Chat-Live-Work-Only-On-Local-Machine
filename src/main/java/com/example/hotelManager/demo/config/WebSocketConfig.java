@@ -6,12 +6,11 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-/**
- * Created by rajeevkumarsingh on 24/07/17.
- */
+
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws").withSockJS();
@@ -20,10 +19,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/app");
-          registry.enableSimpleBroker("/topic");   // Enables a simple in-memory broker
+        registry.enableStompBrokerRelay("/topic")
+                .setRelayHost("rat-01.rmq2.cloudamqp.com")
+                .setRelayPort(61613)
+                .setClientLogin("lppsrmjh")
+                .setClientPasscode("AN_AokArEdcxA_kOeTrzInLw-qoZgUpF")
+                .setSystemLogin("lppsrmjh")
+                .setSystemPasscode("AN_AokArEdcxA_kOeTrzInLw-qoZgUpF")
+                .setVirtualHost("lppsrmjh");
     }
-
-
 
 
 //    @Override
@@ -31,7 +35,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 //        registry.enableSimpleBroker("/topic");
 //        registry.setApplicationDestinationPrefixes("/app");
 //    }
-//
+////
 //    @Override
 //    public void registerStompEndpoints(StompEndpointRegistry registry) {
 //        registry.addEndpoint("/live-chat").withSockJS();
